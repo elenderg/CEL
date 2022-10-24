@@ -1,0 +1,176 @@
+/*--- SEÇÃO LÉXICA ---*/
+
+CaracteresIgnoraveis ::= CaracteresDeControle | Espaco | Tab | EspacoRigido
+
+Comentario ::= "\\" Caracteres RetornoDeCarro
+
+Observacao ::= '[' CaracteresImprimiveis ']'
+
+Terminal ::= Aglomerado | Possesivo | Qualificador | Texto
+
+Aglomerado ::= InicioDoAglomerado ( CaractereAglutinavel )
+
+CaractereAglutinavel ::= Letra | Digito | '~' | '@' | '#' | '%' | '_' | '$' | '&' | '-' | '+' | '/' | '|'
+
+InicioDoAglomerado ::= Letra | Digito | '~' | '@' | '#' | '%' | '_' | '$' | '&' 
+
+Letra ::= 
+'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 
+'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z' | 
+'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' | 'j' | 'k' | 'l' | 'm' | 
+'n' | 'o' | 'p' | 'q' | 'r' | 's' | 't' | 'u' | 'v' | 'w' | 'x' | 'y' | 'z' | 
+'¡' | '¢' | '£' | '¤' | '¥' | '¦' | '§' | '¨' | '©' | 'ª' | '«' | '¬' | '®' | '¯' | 
+'°' | '±' | '²' | '³' | 'µ' | '¶' | '·' | '¹' | 'º' | '»' | '¼' | '½' | '¾' | '¿' | 
+'À' | 'Á' | 'Â' | 'Ã' | 'Ä' | 'Å' | 'Æ' | 'Ç' | 'È' | 'É' | 'Ê' | 'Ë' | 'Ì' | 'Í' | 'Î' | 
+'Ï' | 'Ð' | 'Ñ' | 'Ò' | 'Ó' | 'Ô' | 'Õ' | 'Ö' | 'Ø' | 'Ù' | 'Ú' | 'Û' | 'Ü' | 'Ý' | 'Þ' | 'ß' | 
+'à' | 'á' | 'â' | 'ã' | 'ä' | 'å' | 'æ' | 'ç' | 'è' | 'é' | 'ê' | 'ë' | 'ì' | 'í' | 'î' | 'ï' | 
+'ð' | 'ñ' | 'ò' | 'ó' | 'ô' | 'õ' | 'ö' | '÷' | 'ø' | 'ù' | 'ú' | 'û' | 'ü' | 'ý' | 'þ' | 'ÿ'
+
+Digito ::= '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+
+Qualificador ::= '(' CaracteresImprimiveis ')'
+
+Texto ::= '"' CaracteresImprimiveis '"' | '"' (CaracteresImprimiveis)? CitacaoIncorporada '"'
+
+SinalDePontuacao ::= '.' ',' ';' ':' '!' '?'
+
+SimbolosASCII ::= '¡' | '¢' | '£' | '¤' | '¥' | '¦' | '§' | '¨' | '©' | 'ª' | '«' | '¬' | '­' | '®' | 
+'¯' | '°' | '±' | '²' | '³' | '´' | 'µ' | '¶' | '·' | '¸' | '¹' | 'º' | '»' | '¼' | '½' | '¾' | '¿'
+
+SimboloGenerico ::= '|' |  '*'  | '+'  | '-'  | '^'  | '/'  | '<'  | '>' |  '('  | ')'  | '='  | SimbolosASCII
+
+/*--- OUTROS ---*/
+
+CaracteresIgnoraveis ::= Comentario | Observacao
+
+NumeroInteiro ::= Digito ( Digito )?
+
+Fracao ::= NumeroInteiro '/' NumeroInteiro
+
+NumeroComFracao ::= NumeroInteiro '-' NumeroInteiro '/' NumeroInteiro
+
+Numero ::= NumeroInteiro | Fracao | NumeroComFracao
+
+NumeroHexadecimal ::= '$' ( Digito | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' )*
+
+/*--- SINTAXE ---*/
+
+Programa ::= ( Tipo | Global | Rotina )
+
+TiposPreDefinidos ::= 'Byte' | 'Endereço do Byte' | 'Word' | 'Numero' | 'Detector' | 'Ponteiro' | 'Estrutura' | 'Texto' 
+|'SubTexto' | 'TextoHexadecimal' | 'Lista ' | 'Lista Duplamente Vinculada' | 'Listas' | 'Fração' | 'Numerador' | 'Denominador'
+
+type ::= 'Um' Nome 'é um' NomeDoTipo (InformacaoAdicional)? '.' |
+         'Um' Nome 'tem' Campos '.' |
+         'Um' Nome 'tem' NumeroInteiro NomeDoTipo '.'
+
+InformacaoAdicional ::= 'para um' NomeDoTipo | 'com' Campos
+
+Campos ::= DescritorDoCampo ( Pausas DescritorDoCampo )
+
+DescritorDoCampo ::= 'Um' Nome 'denominado(s)' Nome | 
+                      Quantidade 'byte(s)' 'denominado(s)' Nome | 
+                     'Um' Nome 'no' Nome ('(' 'referência' ')')? 
+
+Quantidade ::= Numero
+
+Pausa  ::= ',' | ';' | 'e' | 'ou'
+
+Pausas ::= ( Pausa )
+
+Conjuncao ::= 'e' | 'ambos' | 'mas' | 'nenhum' | 'nem' | 'ou'
+
+Preposicao ::= 'em' | 'com' | 'antes' | 'depois' 
+
+Global ::= 'O' Nome 'é um' NomeDoTipo ( InformacaoAdicional )? '.' |
+           'O' Nome 'tem' Campos '.' |
+           'O' Nome 'é um' NomeDoTipo 'igual a' TermoConstante '.' |
+           'O' Nome 'tem' TermoConstante '.'
+
+Rotina  ::= Procedimento | Decisor | Funcao | RetroInvocacao
+
+Procedimento ::= ( 'Para' NomeDaRotina ';' ) | 
+                'Para' NomeDaRotina ':' RetroInvoque | Declaracao
+
+Decisor ::= ( 'Para que se decida se' NomeDaRotina ';' ) | 'Para que se decida se' NomeDaRotina ':' RetroInvoque | Declaracao
+
+Funcao ::= ( 'Para que se atribua um' NomeDoTipo "'S" Nome 'para um' NomeDoTipo ';' ) | 
+               'Para que se atribua um' NomeDoTipo "'S" Nome 'para um' NomeDoTipo ':' RetroInvoque | Declaracao |
+             ( 'Para que se atribua o' Nome "'S" Nome 'para um' NomeDoTipo ';' ) | 
+               'Para que se atribua o' Nome "'S" Nome 'para um' NomeDoTipo ':' RetroInvoque | Declaracao
+
+RetroInvocacao ::= ( 'Para que se compativelmente' NomeDaRotina ';' ) 'Para que se compativelmente' NomeDaRotina ':' RetroInvoque | Declaracao
+
+NomeDaRotina ::= ( Alcunha | Parametro | Frase ) ( Qualificador )?
+
+/*Alcunha ::= Artigos*/
+
+Parametro ::= 'Um' Nome ( 'denominado' Nome )?
+
+Frase ::= 'O' Nome
+
+RetroInvoque ::= 'Acione' NomeDaRotina '.'
+
+Nome ::= Artigos | Preposicao |Conjuncao | Verbo | Operador | 'denominado' | 'igual a'
+
+Declaracao ::= Isole | Percorra | Condicional | Incondicional '.'
+
+Isole ::= 'Isole' Argumento '.'
+
+Percorra ::= 'Percorra' '.'
+
+Condicional ::= 'IF' InvocaDecisor ',' Incondicional ( ';' Incondicional )? '.'
+
+Incondicional ::= Pare | Invocacao | Retorne | Execute | Repita | Direcione | Sobreponha | Delibere
+
+Pare ::= 'Pare'
+
+Invocacao-interna ::= ( Alcunha | Expressao | Frase ) ( Qualificador )?
+
+Invocacao-externa ::= 'Invoque' '"Nome da Função"' 'da' '"Nome da DLL"' ( 'usando' Expressao ( 'e' Expressao )?* ) [ 'Solicitando' Termo ]?
+
+Invocacao-indireta ::= 'Invoque' Expressao ( 'usando' Expressao ( 'e' Expressao ) ) ( 'Solicitando' Termo )?
+
+Retorne ::= 'Retorne'
+
+Execute ::= 'Execute' NumeroHexadecimal
+
+Direcione ::= 'Direcione' Termo 'Para a Rotina '( Alcunha | Parametro | Frase ) ( Qualificador )
+
+Sobreponha ::= 'Sobreponha' Expressao
+
+Repita ::= 'Repita'
+
+Delibere ::= 'Delibere' ExpressaoDeliberadora
+
+ExpressaoDeliberadora ::= 'afirmativamente' | 'negativamente'
+
+Expressao ::= Termo ( Operador Termo )
+
+Operador ::= 'mais' |' menos' | 'vezes' | 'multiplicado por' | 'dividido por' | 'seguido de' | 'junto de' | 'junto com' | 'acompanhado de'
+
+TermoConstante ::= TermoNegativoConstante | TermoPositivoConstante | ValorLiteral
+
+TermoNegativoConstante ::= '-' TermoConstante
+
+TermoPositivoConstante ::= '+' TermoConstante
+
+ValorLiteral ::= Numero [ Nome Tipo ] | Texto-Terminal | NumeroHexadecimal | 'sim' | 'não' | 'inexistente'
+
+Termo ::= TermoNegativo | TermoPositivo | VariavelLocal | Variavel | TermoLiteral ( 'como um' NomeDoTipo )? ( '/' Termo )?
+
+TermoNegativo ::= '-' Termo
+
+TermoPositivo ::= '+' Termo
+
+VariavelLocal ::= 'Um' Nome (' denominado' Nome )? Possesivos
+
+Variavel ::= 'O' Possesivos NomeDaVariavel Possesivos
+
+TermoLiteral ::= Possesivos ValorLiteral 
+
+Possesivos ::= ( Possesivos )
+
+Possessivo ::= "'S" ( NomeDoCampo | Funcao | 'conteúdo' | 'tamanho' | 'endereço' )
+
+
